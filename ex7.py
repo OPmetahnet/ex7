@@ -86,7 +86,17 @@ def insert_owner_bst(root, new_node):
     """
     Insert a new BST node by owner_name (alphabetically). Return updated root.
     """
-    pass
+    # init new tree
+    if root is None:
+        return new_node
+    # find the correct placement for the new node
+    if root['owner'] == new_node['owner']:
+        return root
+    elif root['owner'] < new_node['owner']:
+        root['right'] = insert_owner_bst(root['right'], new_node)
+    else:
+        root['left'] = insert_owner_bst(root['left'], new_node)
+    return root
 
 def find_owner_bst(root, owner_name):
     """
@@ -259,6 +269,49 @@ def main_menu():
           "5. Print All\n"
           "6. Exit\n")
     pass
+
+def new_pokedex():
+    global ownerRoot
+    # get name from user
+    name = input("Owner name: ")
+    if ownerRoot is not None and name in ownerRoot:
+        print("Owner '" , name, "' already exists. No new Pokedex created.")
+        return
+
+    # ask for a starter choice
+    prompt = ("Choose your starter Pokemon:\n"
+                                   "1) Treecko\n"
+                                   "2) Torchic\n"
+                                   "3) Mudkip\n"
+                                   "Your choice: ")
+    starter_choice = read_int_safe(prompt)
+
+    # check outcome based on starter choice
+    match starter_choice:
+        case 1:
+            new_owner = create_owner_node(name)
+            # make pokedex a list starting with Treecko
+            new_owner['pokedex'] = [HOENN_DATA[0]]
+            pass
+        case 2:
+            new_owner = create_owner_node(name)
+            # make pokedex a list starting with Torchic
+            new_owner['pokedex'] = [HOENN_DATA[3]]
+            pass
+        case 3:
+            new_owner = create_owner_node(name)
+            # make pokedex a list starting with Mudkip
+            new_owner['pokedex'] = [HOENN_DATA[6]]
+            pass
+        case _:
+            print("Invalid. No new Pokedex created.\n")
+            return
+
+    # insert the new node to owners tree
+    ownerRoot = insert_owner_bst(ownerRoot, new_owner)
+    print("New Pokedex created for", name, "with starter", new_owner['pokedex'][0]['Name'] ,".")
+    return
+
 
 def main():
     "Entry point: calls main_menu()."

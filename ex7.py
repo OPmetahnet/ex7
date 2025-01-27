@@ -185,7 +185,17 @@ def release_pokemon_by_name(owner_node):
     """
     Prompt user for a Pokemon name, remove it from this owner's pokedex if found.
     """
-    pass
+    poke_name = input("Enter Pokemon Name to release: ")
+    # check if the given name is in the pokedex
+    for pokemon in owner_node['pokedex']:
+        if pokemon['Name'].lower() == poke_name.lower():
+            # if found - remove from the pokedex
+            print("Releasing",poke_name,"from",owner_node['owner'],".\n")
+            owner_node['pokedex'].remove(pokemon)
+            return
+    # if the pokemon was not found
+    print("No Pokemon named'",poke_name,"'in op's Pokedex.\n")
+    return
 
 def evolve_pokemon_by_name(owner_node):
     """

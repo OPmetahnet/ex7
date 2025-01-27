@@ -102,7 +102,16 @@ def find_owner_bst(root, owner_name):
     """
     Locate a BST node by owner_name. Return that node or None if missing.
     """
-    pass
+    # if not found return None
+    if root is None:
+        return None
+    # go over all nodes and try to find the name in one of them
+    if root['owner'].lower() == owner_name.lower():
+        return root
+    elif root['owner'].lower() > owner_name.lower():
+        return find_owner_bst(root['left'], owner_name)
+    else:
+        return find_owner_bst(root['right'], owner_name)
 
 def min_node(node):
     """

@@ -249,6 +249,50 @@ def existing_pokedex():
     - Evolve
     - Back
     """
+    global ownerRoot
+    owner_name = input("Owner name: ")
+    owner = find_owner_bst(ownerRoot, owner_name)
+
+    # if the owner is found - go to pokedex menu
+    if owner is not None:
+        while True:
+            prompt = "--" + owner_name + "'s Pokedex Menu --\n" \
+                     + "1. Add Pokemon\n" \
+                     + "2. Display Pokedex\n" \
+                     + "3. Release Pokemon\n" \
+                     + "4. Evolve Pokemon\n" \
+                     + "5. Back to Main\n" \
+                     + "Your choice: "
+            menu_choice = read_int_safe(prompt)
+            match menu_choice:
+                # add a pokemon
+                case 1:
+                    owner = add_pokemon_to_owner(owner)
+                    continue
+                # display pokemon
+                case 2:
+                    display_filter_sub_menu(owner)
+                    continue
+                # release pokemon
+                case 3:
+                    release_pokemon_by_name(owner)
+                    continue
+                # evolve pokemon
+                case 4:
+                    evolve_pokemon_by_name(owner)
+                    continue
+                # return to menu
+                case 5:
+                    print("Back to Main Menu.\n")
+                    break
+                case _:
+                    print("Invalid choice.\n")
+                    continue
+    # if the owner is not found print message and go back
+    else:
+        print("Owner ", owner_name , " not found.\n")
+        return
+
     pass
 
 def main_menu():

@@ -154,7 +154,23 @@ def add_pokemon_to_owner(owner_node):
     """
     Prompt user for a Pokemon ID, find the data, and add to this owner's pokedex if not duplicate.
     """
-    pass
+    # get an id from the user
+    pokemon_id = read_int_safe("Enter Pokemon ID to add: ")
+    if not 1 <= pokemon_id <= 135:
+        print("ID", pokemon_id, "not found in Honen data.\n")
+        return owner_node
+
+    # if pokemon is already in the pokedex
+    if any(pokemon_id == pokemon['ID'] for pokemon in owner_node['pokedex']):
+        print("Pokemon already in the list. No changes made.\n")
+        return owner_node
+
+    # if valid - insert to the pokedex
+    owner_node['pokedex'].append(HOENN_DATA[pokemon_id - 1])
+    print("Pokemon",HOENN_DATA[pokemon_id - 1]['Name']
+          ,"(ID", pokemon_id,
+          ") added to",owner_node['owner'],"'s Pokedex.\n")
+    return owner_node
 
 def release_pokemon_by_name(owner_node):
     """

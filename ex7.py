@@ -249,6 +249,115 @@ def display_filter_sub_menu(owner_node):
     6) All
     7) Back
     """
+    while True:
+        prompt = "-- Display Filter Menu --\n" \
+              + "1. Only a certain Type\n" \
+              + "2. Only Evolvable\n" \
+              + "3. Only Attack above __\n" \
+              + "4. Only HP above __\n" \
+              + "5. Only names starting with letter(s)\n" \
+              + "6. All of them!\n" \
+              + "7. Back\n" \
+              + "Your choice: "
+        display_choice = read_int_safe(prompt)
+        match display_choice:
+            # only a certain type
+            case 1:
+                flag = False
+                type_to_print = input("Which Type? (e.g. GRASS, WATER): ")
+                for pokemon in owner_node['pokedex']:
+                    # check if the type is the same word as the required type
+                    if pokemon['Type'].lower() == type_to_print.lower():
+                        flag = True
+                        # take every key and value of a pokemon, pair them and add ',' between every pair
+                        stat_print_format = [f"{key}: {value}" for key, value in pokemon.items()]
+                        print(", ".join(stat_print_format))
+                # if a pokemon has not been printed
+                if not flag:
+                    print("There are no Pokemons in this Pokedex that match the criteria.\n")
+                print("\n")
+                continue
+            # only evolvable
+            case 2:
+                flag = False
+                for pokemon in owner_node['pokedex']:
+                    # check if pokemon can evolve
+                    if pokemon['Can Evolve'] == 'TRUE':
+                        flag = True
+                        # take every key and value of a pokemon, pair them and add ',' between every pair
+                        stat_print_format = [f"{key}: {value}" for key, value in pokemon.items()]
+                        print(", ".join(stat_print_format))
+                # if a pokemon has not been printed
+                if not flag:
+                    print("There are no Pokemons in this Pokedex that match the criteria.\n")
+                continue
+            # only attack above __
+            case 3:
+                flag = False
+                prompt = "Enter Attack threshold: "
+                threshold = read_int_safe(prompt)
+                for pokemon in owner_node['pokedex']:
+                    # check if pokemon has higher atk than the threshold
+                    if pokemon['Attack'] > threshold:
+                        flag = True
+                        # take every key and value of a pokemon, pair them and add ',' between every pair
+                        stat_print_format = [f"{key}: {value}" for key, value in pokemon.items()]
+                        print(", ".join(stat_print_format))
+                # if a pokemon has not been printed
+                if not flag:
+                    print("There are no Pokemons in this Pokedex that match the criteria.\n")
+                continue
+            # only HP above __
+            case 4:
+                flag = False
+                prompt = "Enter HP threshold: "
+                threshold = read_int_safe(prompt)
+                for pokemon in owner_node['pokedex']:
+                    # check if pokemon has higher atk than the threshold
+                    if pokemon['HP'] > threshold:
+                        flag = True
+                        # take every key and value of a pokemon, pair them and add ',' between every pair
+                        stat_print_format = [f"{key}: {value}" for key, value in pokemon.items()]
+                        print(", ".join(stat_print_format))
+                # if a pokemon has not been printed
+                if not flag:
+                    print("There are no Pokemons in this Pokedex that match the criteria.\n")
+                continue
+            # only names beginning with a given letter
+            case 5:
+                flag = False
+                letter = input("Starting letter(s): ")
+                for pokemon in owner_node['pokedex']:
+                    # check if a pokemon's name starts with the given letter
+                    if pokemon['Name'].lower().startswith(letter):
+                        flag = True
+                        # take every key and value of a pokemon, pair them and add ',' between every pair
+                        stat_print_format = [f"{key}: {value}" for key, value in pokemon.items()]
+                        print(", ".join(stat_print_format))
+                # if a pokemon has not been printed
+                if not flag:
+                    print("There are no Pokemons in this Pokedex that match the criteria.\n")
+                continue
+            # all of them
+            case 6:
+                # checks if the pokedex is empty
+                if not owner_node['pokedex']:
+                    print("There are no Pokemons in this Pokedex that match the criteria.\n")
+                # print all pokemon in the owner's pokedex
+                else:
+                    for pokemon in owner_node['pokedex']:
+                        # take every key and value of a pokemon, pair them and add ',' between every pair
+                        stat_print_format = [f"{key}: {value}" for key, value in pokemon.items()]
+                        print(", ".join(stat_print_format))
+                    print("\n")
+                continue
+            # back
+            case 7:
+                print("Back to Pokedex Menu.\n")
+                break
+            case _:
+                print("Invalid choice.\n")
+                continue
     pass
 
 

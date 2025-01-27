@@ -205,6 +205,42 @@ def evolve_pokemon_by_name(owner_node):
     3) Insert new
     4) If new is a duplicate, remove it immediately
     """
+    name_to_evolve = input("Enter Pokemon Name to evolve: ")
+    # check if the pokemon is in the owner's pokedex
+    is_found = False
+    evolution_flag = False
+    for pokemon in owner_node['pokedex']:
+        # if pokemon is found by name
+        if name_to_evolve.lower() == pokemon['Name'].lower():
+            # pokemon was found
+            is_found = True
+            pokemon_id = pokemon['ID']
+            # check if pokemon can evolve
+            if pokemon['Can Evolve'] == 'TRUE':
+                # check if the evolved form was already in the pokedex
+                if HOENN_DATA[pokemon_id] in owner_node['pokedex']:
+                    evolution_flag = True
+
+                # evolve the pokemon
+                owner_node['pokedex'].append(HOENN_DATA[pokemon_id])  # insert to pokedex
+                owner_node['pokedex'].remove(pokemon)  # remove from pokedex
+                print("Pokemon evolved from", pokemon['Name'], "(ID",pokemon_id,") to",
+                      HOENN_DATA[pokemon['ID']]['Name'],"(ID",pokemon_id + 1,").\n")
+
+                # if the evolved form was already in the pokedex release it at once
+                if evolution_flag:
+                    print(HOENN_DATA[pokemon_id]['Name'], "was already present; releasing it immediately.\n")
+                    owner_node['pokedex'].pop(-1)
+                return
+            # if pokemon cannot evolve
+            else:
+                print(pokemon['Name'],"cannot evolve.\n")
+                return
+    # if the pokemon was not found in the pokedex
+    if not is_found:
+        print("No Pokemon named '",name_to_evolve,"' in",owner_node['owner'],"'s Pokedex.\n")
+        return
+
     pass
 
 
